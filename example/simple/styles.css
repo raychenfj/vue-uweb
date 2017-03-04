@@ -3,6 +3,7 @@ body {
   -webkit-font-smoothing: antialiased;
   color: #34495e;
   background-color: #fff;
+  font-size: 14px;
 }
 
 #app {

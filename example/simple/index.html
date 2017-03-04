@@ -14,7 +14,18 @@
   <div id="app">
     <img id="logo" src="./images/logo.png" alt="Vue logo">
     <h1>欢迎使用vue-uweb插件</h1>
-    <h2>uweb directives</h2>
+    <h2>1. 安装</h2>
+    <h3>npm</h3>
+    <pre><code class="language-html">npm install vue-uweb --save</code></pre>
+    <h3>直接在页面中引用</h3>
+    <pre><code class="language-html">&ltscript src="../node_modules/vue-uweb/dist/index.js">&lt/script></code></pre>
+    <h3>通过es6模块加载</h3>
+    <pre><code class="language-javascript">import UWeb from 'vue-uweb'</code></pre>
+    <h3>使用vue-uweb</h3>
+    <pre><code class="language-javascript">Vue.use(UWeb,'YOUR_SITEID_HERE')</code></pre>
+
+
+    <h2>2. uweb directives</h2>
     <h3>track-event</h3>
     <button v-track-event.click="'click,e vent'">统计click事件</button>
     <pre><code class="language-html">&ltbutton v-track-event.click="'click, event''">&lt/button></code></pre>
@@ -26,7 +37,7 @@
     <pre><code class="language-html">&ltinput v-track-event.keypress="'keypress, event'"></code></pre>
 
     <button v-track-event="'click, event'">以字符串传递参数</button>
-    <span>参数和顺序请参照 <a href="http://open.cnzz.com/a/api/trackevent/">http://open.cnzz.com/a/api/trackevent/</a></span>
+    <a href="http://open.cnzz.com/a/api/trackevent/">关于参数和顺序</a>
     <pre><code class="language-html">&ltbutton v-track-event="'click, event'">&lt/button></code></pre>
 
     <button v-track-event="{category:'click', action:'event'}">以对象字面量传递参数</button>
@@ -53,6 +64,8 @@
 &ltdiv v-auto-pageview=true>&lt/div></code></pre>
     <div>停止 auto-pageview</div>
     <pre><code class="language-html">&ltdiv v-auto-pageview=false>&lt/div></code></pre>
+
+    <h2>3. 编程式调用</h2>
   </div>
 </body>
 <script src="./script.js"></script>

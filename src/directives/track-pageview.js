@@ -19,10 +19,12 @@ export default function (el, binding) {
   }
 
   // track a tag
-  if (!args.length) {
-    if (el.tagName.toLowerCase() === 'a' && el.href) {
+  if (el.tagName.toLowerCase() === 'a' && el.href) {
+    if (!args.length) {
       args.push(el.href.replace(location.origin, ''))
     }
+    el.addEventListener('click', () => uweb.trackPageview(...args), false)
+    return
   }
 
   uweb.trackPageview(...args)

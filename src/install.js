@@ -10,10 +10,7 @@ import trackPageview from '././directives/track-pageview'
    * @returns
    */
 export default function install (Vue, options) {
-  if (!options.siteId) return console.error('siteId is missing')
-
   if (this.install.installed) return
-  this.install.installed = true
 
   let siteId = null
   // passsing siteId through object or string
@@ -22,6 +19,10 @@ export default function install (Vue, options) {
   } else {
     siteId = options
   }
+  if (!siteId) {
+    return console.error('siteId is missing')
+  }
+  this.install.installed = true
 
   // insert u-web statistics script
   const script = document.createElement('script')

@@ -82,5 +82,7 @@ const uweb = {
 // uweb apis
 methods.forEach((method) => (uweb[method] = uweb._createMethod(method)))
 
-window.UWeb = uweb
+if (window.Vue) {
+  window.UWeb = uweb
+}
 export default uweb
