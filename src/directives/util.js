@@ -1,6 +1,17 @@
 /**
- * skip update if the binding value is empty or equal to old value
+ * if the binding value is equal to oldeValue
  */
-export function skip (binding) {
-  return binding.value === '' || binding.value === undefined || binding.value === null || binding.value === binding.oldValue
+export function notChanged (binding) {
+  if (binding.oldValue !== undefined) {
+    return binding.value === binding.oldValue
+  } else {
+    return false
+  }
+}
+
+/**
+ * if the binding value is empty
+ */
+export function isEmpty (binding) {
+  return binding.value === '' || binding.value === undefined || binding.value === null
 }

@@ -1,8 +1,8 @@
 import uweb from '../index'
-import { skip } from './util'
+import { notChanged } from './util'
 
 export default function (el, binding) {
-  if (skip(binding)) return
+  if (notChanged(binding)) return
 
   let args = []
   if (binding.value === false || binding.value === 'false') args.push(false)

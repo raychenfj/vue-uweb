@@ -1,8 +1,8 @@
 import uweb from '../index'
-import { skip } from './util'
+import { notChanged, isEmpty } from './util'
 
 export default function (el, binding) {
-  if (skip(binding)) return
+  if (notChanged(binding) || isEmpty(binding)) return
 
   let args = []
   // use modifier as events
@@ -24,7 +24,7 @@ export default function (el, binding) {
     // passing parameters as string separate by comma
   } else if (typeof binding.value === 'string') {
     args = binding.value.split(',')
-    args.forEach(arg => arg.trim())
+    args.forEach((arg, i) => (args[i] = arg.trim()))
   }
 
   if (!events.length) events.push('click') // listen click event by default

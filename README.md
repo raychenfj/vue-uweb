@@ -1,27 +1,17 @@
 # vue-uweb
 
-> vuejs 友盟统计埋点插件
+> vuejs 友盟统计埋点插件 🚧(work in progress)
 
-## Build Setup
+## 1. 安装
 
-``` bash
-# install dependencies
-npm install
+## 2. 使用
 
-# serve with hot reload at localhost:8080
-npm run dev
+### 2.1 程序调用API
 
-# build for production with minification
-npm run build
+### 2.2 使用 directives
 
-# build for production and view the bundle analyzer report
-npm run build --report
+## todos
+* 文档 readme
+* 例子 simple 和 webpack
+* 发布
 
-# run unit tests
-npm run unit
-
-# run all tests
-npm test
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

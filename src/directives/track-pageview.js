@@ -1,8 +1,11 @@
 import uweb from '../index'
-import { skip } from './util'
+import { notChanged, isEmpty } from './util'
 
 export default function (el, binding) {
-  if (skip(binding)) return
+  let isATag = el.tagName.toLowerCase() === 'a'
+  if (notChanged(binding)) return
+  if (isATag && isEmpty(binding) && !el.href) return
+  if (!isATag && isEmpty(binding)) return
 
   let args = []
 
@@ -13,14 +16,14 @@ export default function (el, binding) {
     if (value.referer_url) args.push(value.referer_url)
 
     // passing parameters as string separate by comma
-  } else if (typeof binding.value === 'string') {
+  } else if (typeof binding.value === 'string' && binding.value) {
     args = binding.value.split(',')
-    args.forEach(arg => arg.trim())
+    args.forEach((arg, i) => (args[i] = arg.trim()))
   }
 
   // track a tag
-  if (el.tagName.toLowerCase() === 'a' && el.href) {
-    if (!args.length) {
+  if (isATag) {
+    if (!args.length && el.href) {
       args.push(el.href.replace(location.origin, ''))
     }
     el.addEventListener('click', () => uweb.trackPageview(...args), false)

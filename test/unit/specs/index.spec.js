@@ -64,10 +64,10 @@ describe('vue-uweb', () => {
     const _czc = window._czc
     window._czc = []
     let args = ['category', 'aciton', 'label', 999, 'nodeid']
-    UWeb.$trackEvent = UWeb.trackEvent
+    let trackEvent = UWeb.trackEvent
 
     UWeb.trackEvent = (category, action = args[1], label = args[2], value = args[3], nodeid = args[4]) => {
-      UWeb.$trackEvent(category, action, label, value, nodeid)
+      trackEvent.call(UWeb, category, action, label, value, nodeid)
     }
 
     UWeb.trackEvent(args[0])
