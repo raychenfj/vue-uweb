@@ -41,6 +41,7 @@ const uweb = {
    * push the args into _czc, or _cache if the script is not loaded yet
    */
   _push () {
+    this.debug(arguments)
     if (window._czc) {
       window._czc.push.apply(window._czc, arguments)
     } else {

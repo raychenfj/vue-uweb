@@ -12,10 +12,20 @@ import trackPageview from '././directives/track-pageview'
 export default function install (Vue, options) {
   if (this.install.installed) return
 
+  if (options.debug) {
+    this.debug = console.debug
+  } else {
+    this.debug = () => {}
+  }
+
   let siteId = null
+  let autoPageview = true
   // passsing siteId through object or string
   if (typeof options === 'object') {
     siteId = options.siteId
+    if (options.autoPageview === false) {
+      autoPageview = false
+    }
   } else {
     siteId = options
   }
@@ -46,7 +56,7 @@ export default function install (Vue, options) {
   }
 
   this.setAccount(options.siteId)
-  this.setAutoPageview(true)
+  this.setAutoPageview(autoPageview)
 
   document.body.appendChild(script)
 
