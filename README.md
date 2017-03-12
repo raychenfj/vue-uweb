@@ -49,6 +49,7 @@ this.$uweb.trackPageview(content_url[, referer_url])
 ```
 
 **参数**
+
 | 参数 | 必输 | 类型 | 说明 |
 |-----|------|-----|-----|
 | content_url | 是 | string | 自定义虚拟PV页面的URL地址，填写以斜杠‘/’开头的相对路径，系统会自动补全域名 |
@@ -64,6 +65,7 @@ this.$uweb.trackEvent(category, action[, label, value, nodeid])
 ```
 
 **参数**
+
 | 参数 | 必输 | 类型 | 说明 |
 |-----|------|-----|-----|
 | category | 是 | string | 表示事件发生在谁身上，如“视频”、“小说”、“轮显层”等等。 |
@@ -82,6 +84,7 @@ this.$uweb.setCustomVar(name, value[, time])
 ```
 
 **参数**
+
 | 参数 | 必输 | 类型 | 说明 |
 |-----|------|-----|-----|
 | name | 是 | string | 自定义访客种类，用来描述观察访客的角度，如“会员级别”、“访客来源”等等。 |
@@ -100,6 +103,7 @@ this.$uweb.setAccount(siteid)
 ```
 
 **参数**
+
 | 参数 | 必输 | 类型 | 说明 |
 |-----|------|-----|-----|
 | siteid | 是 | int | 绑定要接受API请求的统计代码siteid。 |
@@ -116,6 +120,7 @@ this.$uweb.setAutoPageview(autopageview)
 ```
 
 **参数**
+
 | 参数 | 必输 | 类型 | 说明 |
 |-----|------|-----|-----|
 | autopageview | 是 | boolean | 是否自动发送页面PV的统计请求。关闭自动发送，填false开启自动发送，为true，不调用时默认为true。 |
@@ -130,6 +135,7 @@ his.$uweb.deleteCustomVar(name)
 ```
 
 **参数**
+
 | 参数 | 必输 | 类型 | 说明 |
 |-----|------|-----|-----|
 | name | 是 | string | 需要被删除的自定义访客类型。 填写自定义访客类型种类名name。 |
