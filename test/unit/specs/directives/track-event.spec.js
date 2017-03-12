@@ -1,6 +1,6 @@
 import trackEvent from '../../../../src/directives/track-event'
 import uweb from '../../../../src/index'
-import { htmlElement } from './mocks'
+import { htmlElement } from '../../mocks'
 
 describe('directives.track-event', () => {
   let el = htmlElement()
@@ -17,7 +17,7 @@ describe('directives.track-event', () => {
     binding = {
       modifiers: {}
     }
-    trackEventSpy = null
+    trackEventSpy = sandbox.spy(uweb, 'trackEvent')
   })
 
   afterEach(() => {
@@ -26,7 +26,6 @@ describe('directives.track-event', () => {
 
   it('should track click by default', () => {
     binding.value = 'category, action'
-    trackEventSpy = sandbox.spy(uweb, 'trackEvent').withArgs('category', 'action')
 
     trackEvent(el, binding)
 
@@ -34,7 +33,7 @@ describe('directives.track-event', () => {
     el.listeners.has('click').should.be.true
     el.listeners.get('click')()
 
-    trackEventSpy.calledOnce.should.be.true
+    trackEventSpy.withArgs('category', 'action').calledOnce.should.be.true
   })
 
   it('should use modifiers as event', () => {
@@ -42,7 +41,6 @@ describe('directives.track-event', () => {
     binding.modifiers = {
       keypress: true
     }
-    trackEventSpy = sandbox.spy(uweb, 'trackEvent').withArgs('category', 'action', 'label')
 
     trackEvent(el, binding)
 
@@ -50,7 +48,7 @@ describe('directives.track-event', () => {
     el.listeners.has('keypress').should.be.true
     el.listeners.get('keypress')()
 
-    trackEventSpy.calledOnce.should.be.true
+    trackEventSpy.withArgs('category', 'action', 'label').calledOnce.should.be.true
   })
 
   it('should be able to chain multi modifiers as events', () => {
@@ -60,7 +58,6 @@ describe('directives.track-event', () => {
       mouseup: true,
       mousedown: true
     }
-    trackEventSpy = sandbox.spy(uweb, 'trackEvent').withArgs('category', 'action', 'label', '666')
 
     trackEvent(el, binding)
 
@@ -75,7 +72,7 @@ describe('directives.track-event', () => {
     el.listeners.has('mousedown').should.be.true
     el.listeners.get('mousedown')()
 
-    trackEventSpy.calledThrice.should.be.true
+    trackEventSpy.withArgs('category', 'action', 'label', '666').calledThrice.should.be.true
   })
 
   it('should be able to pass an object as value', () => {
@@ -86,7 +83,6 @@ describe('directives.track-event', () => {
       value: 666,
       nodeid: 'node'
     }
-    trackEventSpy = sandbox.spy(uweb, 'trackEvent').withArgs('category', 'action', 'label', 666, 'node')
 
     trackEvent(el, binding)
 
@@ -94,7 +90,7 @@ describe('directives.track-event', () => {
     el.listeners.has('click').should.be.true
     el.listeners.get('click')()
 
-    trackEventSpy.calledOnce.should.be.true
+    trackEventSpy.withArgs('category', 'action', 'label', 666, 'node').calledOnce.should.be.true
   })
 
   it('should skip when value is not changed', () => {
@@ -105,7 +101,6 @@ describe('directives.track-event', () => {
       value: 666,
       nodeid: 'node'
     }
-    trackEventSpy = sandbox.spy(uweb, 'trackEvent')
     let addEventListener = sandbox.spy(el, 'addEventListener')
 
     trackEvent(el, binding)
@@ -115,7 +110,6 @@ describe('directives.track-event', () => {
   })
 
   it('should skip when value is empty', () => {
-    trackEventSpy = sandbox.spy(uweb, 'trackEvent')
     let addEventListener = sandbox.spy(el, 'addEventListener')
 
     trackEvent(el, binding)

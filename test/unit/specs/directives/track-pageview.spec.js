@@ -1,114 +1,89 @@
-// import trackPageview from '../../../../src/directives/track-pageview'
-// import uweb from '../../../../src/index'
-// import { htmlElement } from './mocks'
+import trackPageview, { watch } from '../../../../src/directives/track-pageview'
+import uweb from '../../../../src/index'
+import { htmlElement } from '../../mocks'
 
 describe('directives.track-pageview', () => {
-  // let el = htmlElement()
-  // let binding = null
+  let el = htmlElement()
+  let binding = null
   let sandbox = null
-  // let trackPageviewSpy = null
+  let trackPageviewSpy = null
 
   before(() => {
     sandbox = sinon.sandbox.create()
   })
 
   beforeEach(() => {
-    // el = htmlElement()
-    // binding = {
-    // }
-    // trackPageviewSpy = null
+    el = htmlElement()
+    binding = {
+    }
+    trackPageviewSpy = sandbox.spy(uweb, 'trackPageview')
   })
 
   afterEach(() => {
     sandbox.restore()
   })
 
-  // it('should binding to nomarl html element', () => {
-  //   binding.value = 'content_url, referer_url'
-  //   trackPageviewSpy = sandbox.spy(uweb, 'trackPageview').withArgs('content_url', 'referer_url')
+  describe('should work with v-show', () => {
+    beforeEach(() => {
+      binding.value = 'v-show'
+    })
 
-  //   trackPageview.bind(el, binding)
+    it('should watch a v-show binded element when it is not displayed', () => {
+      el.style.display = 'none'
 
-  //   trackPageviewSpy.calledOnce.should.be.true
-  //   el.listeners.size.should.equal(0)
-  // })
+      trackPageview.bind(el, binding)
 
-  // it('should add click event to a tag', () => {
-  //   el = aElement()
-  //   binding.value = 'content_url, referer_url'
-  //   trackPageviewSpy = sandbox.spy(uweb, 'trackPageview').withArgs('content_url', 'referer_url')
+      trackPageviewSpy.notCalled.should.be.true
+      watch.should.have.lengthOf(1)
+      watch[0].should.equal(el)
+    })
 
-  //   trackPageview(el, binding)
+    it('should send request when a v-show binded element it is displayed', () => {
+      el = watch[0]
+      el.style.display = 'block'
 
-  //   trackPageviewSpy.notCalled.should.be.true
-  //   el.listeners.has('click').should.be.true
+      trackPageview.update(el, binding)
 
-  //   el.listeners.get('click')()
-  //   trackPageviewSpy.calledOnce.should.be.true
-  // })
+      trackPageviewSpy.withArgs('v-show').calledOnce.should.be.true
+      watch.should.have.lengthOf(0)
+      watch.findIndex(element => element === el).should.equal(-1)
+    })
 
-  // it('should use href of a tag as content_url', () => {
-  //   el = aElement()
-  //   binding.value = ''
-  //   el.href = 'http://localhost:9876/example'
-  //   trackPageviewSpy = sandbox.spy(uweb, 'trackPageview').withArgs('/example')
+    it('should remove from watch queue when a v-show binded element is unbinded', () => {
+      watch.push(el)
 
-  //   trackPageview(el, binding)
+      trackPageview.unbind(el, binding)
 
-  //   trackPageviewSpy.notCalled.should.be.true
-  //   el.listeners.has('click').should.be.true
+      watch.should.have.lengthOf(0)
+      watch.findIndex(element => element === el).should.equal(-1)
+    })
+  })
 
-  //   el.listeners.get('click')()
-  //   trackPageviewSpy.calledOnce.should.be.true
-  // })
+  it('should be able to pass an object as value', () => {
+    binding.value = {
+      content_url: '/foo',
+      referer_url: 'vue-uweb.com'
+    }
 
-  // it('should be able to pass a object as value', () => {
-  //   binding.value = {
-  //     content_url: 'content_url',
-  //     referer_url: 'referer_url'
-  //   }
+    trackPageview.bind(el, binding)
 
-  //   trackPageviewSpy = sandbox.spy(uweb, 'trackPageview').withArgs('content_url', 'referer_url')
+    trackPageviewSpy.withArgs(binding.value.content_url, binding.value.referer_url).calledOnce.should.be.true
+    watch.should.have.lengthOf(0)
+  })
 
-  //   trackPageview.bind(el, binding)
+  it('should return when value is empty', () => {
+    trackPageview.bind(el, binding)
 
-  //   trackPageviewSpy.calledOnce.should.be.true
-  //   el.listeners.size.should.equal(0)
-  // })
+    trackPageviewSpy.notCalled.should.be.true
+    watch.should.have.lengthOf(0)
+  })
 
-  // it('should skip when value not changed', () => {
-  //   binding.value = binding.oldValue = {
-  //     content_url: 'content_url',
-  //     referer_url: 'referer_url'
-  //   }
-  //   trackPageviewSpy = sandbox.spy(uweb, 'trackEvent')
-  //   let addEventListener = sandbox.spy(el, 'addEventListener')
+  it('should return when value is not changed', () => {
+    binding.value = binding.oldValue = 'same'
 
-  //   trackPageview.update(el, binding)
+    trackPageview.bind(el, binding)
 
-  //   trackPageviewSpy.notCalled.should.be.true
-  //   addEventListener.notCalled.should.be.true
-  // })
-
-  // it('should skip when a tag without binding value and href', () => {
-  //   el = aElement()
-
-  //   trackPageviewSpy = sandbox.spy(uweb, 'trackEvent')
-  //   let addEventListener = sandbox.spy(el, 'addEventListener')
-
-  //   trackPageview(el, binding)
-
-  //   trackPageviewSpy.notCalled.should.be.true
-  //   addEventListener.notCalled.should.be.true
-  // })
-
-  // it('should skip when a html element without binding value', () => {
-  //   trackPageviewSpy = sandbox.spy(uweb, 'trackEvent')
-  //   let addEventListener = sandbox.spy(el, 'addEventListener')
-
-  //   trackPageview.bind(el, binding)
-
-  //   trackPageviewSpy.notCalled.should.be.true
-  //   addEventListener.notCalled.should.be.true
-  // })
+    trackPageviewSpy.notCalled.should.be.true
+    watch.should.have.lengthOf(0)
+  })
 })
