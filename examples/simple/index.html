@@ -14,17 +14,18 @@
   <div id="app">
     <img id="logo" src="./images/logo.png" alt="Vue logo">
     <h1>欢迎使用vue-uweb插件</h1>
+
     <h2>1. 安装</h2>
     <h3>npm</h3>
     <pre><code class="language-html">npm install vue-uweb --save</code></pre>
     <h3>直接在页面中引用</h3>
     <pre><code class="language-html">&ltscript src="../node_modules/vue-uweb/dist/index.js">&lt/script></code></pre>
     <h3>通过es6模块加载</h3>
-    <pre><code class="language-javascript">import UWeb from 'vue-uweb'</code></pre>
+    <pre><code class="language-javascript">import uweb from 'vue-uweb'</code></pre>
     <h3>使用 vue-uweb</h3>
-    <pre><code class="language-javascript">Vue.use(UWeb,'YOUR_SITEID_HERE')</code></pre>
+    <pre><code class="language-javascript">Vue.use(uweb,'YOUR_SITEID_HERE')</code></pre>
     <h3>通过传递 options 参数进行更多设置</h3>
-     <pre><code class="language-javascript">Vue.use(UWeb,options)</code></pre>
+    <pre><code class="language-javascript">Vue.use(uweb,options)</code></pre>
     <div>options</div>
     <ul>
       <li>debug，可选，调试模式下将在控制台中输出调用 window._czc.push 时传递的参数，默认为 false，<b>请不要在生产环境中使用</b>，避免造成安全隐患</li>
@@ -33,7 +34,7 @@
       <li>src，可选，指定统计脚本标签的 src 属性，默认为 http://s11.cnzz.com/z_stat.php?id=SITEID&web_id=SITEID</li>
     </ul>
 
-    <h2>2. UWeb API</h2>
+    <h2>2. uweb API</h2>
     <a href="http://open.cnzz.com/a/new/procedure/">查看官方文档</a>
     <div>
       <b>注意:</b> 所有this均为 Vue 实例
@@ -128,10 +129,11 @@
     </ul>
 
     <h2>3. uweb 指令</h2>
-    <h3>track-event</h3>
+
+    <h3>3.1 track-event</h3>
     <div>
-      使用指令 v-track-event 监听事件， 通过modifiers指定事件类型，将自动为绑定元素添加事件监听，当事件触发调用统计代码。 如不指定，默认监听 click 事件。
-      可通过逗号分隔的字符串或对象字面量传递参数，以字符串传递时请注意参数顺序，可参考 trackEvent API
+      使用指令 v-track-event 监听事件， 通过modifiers指定事件类型，将自动为绑定元素添加事件监听，当事件触发调用统计代码。 如不指定，默认监听 click 事件。 可通过逗号分隔的字符串或对象字面量传递参数，以字符串传递时请注意参数顺序，可参考
+      trackEvent API
     </div><br>
     <button v-track-event.click="'event, click'">统计click事件</button>
     <pre><code class="language-html">&ltbutton v-track-event.click="'event, click''">&lt/button></code></pre>
@@ -149,7 +151,7 @@
     <button v-track-event="{category:'event', action:'click'}">以对象字面量传递参数</button>
     <pre><code class="language-html">&ltbutton v-track-event="{category:'event', action:'click'}">&lt/button></code></pre>
 
-    <h3>track-pageview</h3>
+    <h3>3.2 track-pageview</h3>
     <div>
       使用 v-show 跟踪虚拟pv
       <input type="checkbox" v-model="vshow"></input>
@@ -170,7 +172,7 @@
     <div v-track-pageview="{content_url:'/zoo', referer_url:'https://github.com/raychenfj'}">以对象字面量指定受访页面和来源</div>
     <pre><code class="language-html">&ltdiv v-track-pageview="{content_url:'/zoo', referer_url:'https://github.com/raychenfj'}">&lt/div></code></pre>
 
-    <h3>auto-pageview</h3>
+    <h3>3.3 auto-pageview</h3>
     <span v-auto-pageview="auto">autoPageView: {{auto}}</span>
     <input type="checkbox" v-model="auto">
     <div>启用 auto-pageview</div>
@@ -178,6 +180,19 @@
 
     <div>停止 auto-pageview</div>
     <pre><code class="language-html">&ltdiv v-auto-pageview=false>&lt/div></code></pre>
+
+    <h1>4. 默认参数和改变参数顺序</h1>
+    <div>默认情况下，vue-uweb 并不提供默认参数和参数顺序的设置，但开发者可以根据需求，使用装饰器模式，来提供默认参数和改变参数顺序。例如：我们想在监听事件时默认category，只需要传递action，则代码如下</div>
+    <pre><code class="language-javascript">import uweb from 'vue-uweb'
+
+let trackEvent = uweb.trackEvent
+uweb.trackEvent = (action, category='default'') => {
+  trackEvent.call(uweb, category, action, '', '', '')
+}
+
+Vue.use(uweb)
+      </code></pre>
+    <div><b>注意:</b>由于所有 uweb指令 最终都将调用 uweb api 中的方法，所以对默认参数和参数顺序的修改同样会影响指令的参数和顺序</div>
   </div>
 </body>
 <script src="./script.js"></script>

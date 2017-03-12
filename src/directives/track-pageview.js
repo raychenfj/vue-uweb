@@ -1,7 +1,7 @@
 import uweb from '../index'
 import { notChanged, isEmpty } from './util'
 
-let watch = []
+export let watch = []
 
 const trackPageview = {
   bind (el, binding) {

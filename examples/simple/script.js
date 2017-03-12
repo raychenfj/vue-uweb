@@ -1,7 +1,7 @@
-Vue.use(UWeb, {
-  debug: true,
-  siteId: '1261414301'
-})
+var Vue = window.Vue
+var uweb = window.uweb
+
+Vue.use(uweb, '1261414301')
 
 new Vue({
   el: '#app',

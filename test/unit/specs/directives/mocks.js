@@ -7,11 +7,3 @@ export function htmlElement () {
     }
   }
 }
-
-export function aElement () {
-  return {
-    ...htmlElement(),
-    tagName: 'A',
-    href: ''
-  }
-}

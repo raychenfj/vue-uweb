@@ -19,12 +19,11 @@ export default function install (Vue, options) {
   }
 
   let siteId = null
-  let autoPageview = true
   // passsing siteId through object or string
   if (typeof options === 'object') {
     siteId = options.siteId
-    if (options.autoPageview === false) {
-      autoPageview = false
+    if (options.autoPageview !== false) {
+      options.autoPageview = true
     }
   } else {
     siteId = options
@@ -56,7 +55,7 @@ export default function install (Vue, options) {
   }
 
   this.setAccount(options.siteId)
-  this.setAutoPageview(autoPageview)
+  this.setAutoPageview(options.autoPageview)
 
   document.body.appendChild(script)
 

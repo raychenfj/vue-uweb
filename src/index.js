@@ -60,6 +60,11 @@ const uweb = {
   },
 
   /**
+   * debug
+   */
+  debug () {},
+
+  /**
    * the plugins is ready when the script is loaded
    */
   ready () {
@@ -84,6 +89,6 @@ const uweb = {
 methods.forEach((method) => (uweb[method] = uweb._createMethod(method)))
 
 if (window.Vue) {
-  window.UWeb = uweb
+  window.uweb = uweb
 }
 export default uweb

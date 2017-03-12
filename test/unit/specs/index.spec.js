@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import UWeb from '../../../src/index'
+import uweb from '../../../src/index'
 import chai from 'chai'
 
 describe('vue-uweb', () => {
@@ -25,33 +25,33 @@ describe('vue-uweb', () => {
 
   it('should contain uweb apis', () => {
     methods.forEach((method) => {
-      UWeb.should.have.property(method)
-      UWeb[method].should.be.a('function')
+      uweb.should.have.property(method)
+      uweb[method].should.be.a('function')
     })
   })
 
   describe('install', function () {
     it('should load script successfully', function (done) {
       let createElement = sandbox.spy(document, 'createElement').withArgs('script')
-      let _resolve = sandbox.spy(UWeb, '_resolve')
-      let setAccount = sandbox.spy(UWeb, 'setAccount')
-      let setAutoPageview = sandbox.spy(UWeb, 'setAutoPageview')
+      let _resolve = sandbox.spy(uweb, '_resolve')
+      let setAccount = sandbox.spy(uweb, 'setAccount')
+      let setAutoPageview = sandbox.spy(uweb, 'setAutoPageview')
 
       const siteId = '1261414301'
-      Vue.use(UWeb, siteId)
+      Vue.use(uweb, siteId)
 
-      UWeb.ready().then(() => {
+      uweb.ready().then(() => {
         Vue.prototype.should.have.property('$uweb')
-        Vue.prototype.$uweb.should.eql(UWeb)
+        Vue.prototype.$uweb.should.eql(uweb)
         Vue.directive('auto-pageview').should.exist
         Vue.directive('track-event').should.exist
         Vue.directive('track-pageview').should.exist
-        UWeb._cache.should.eql([])
+        uweb._cache.should.eql([])
         createElement.calledOnce.should.be.true
         _resolve.calledOnce.should.be.true
         setAccount.calledOnce.should.be.true
         setAutoPageview.calledOnce.should.be.true
-        UWeb.install.installed.should.be.true
+        uweb.install.installed.should.be.true
         window._czc.should.exist
         let scripts = document.body.getElementsByTagName('script')
         scripts[scripts.length - 1].src.indexOf(siteId).should.not.equal(-1)
@@ -64,18 +64,19 @@ describe('vue-uweb', () => {
     const _czc = window._czc
     window._czc = []
     let args = ['category', 'aciton', 'label', 999, 'nodeid']
-    let trackEvent = UWeb.trackEvent
+    let trackEvent = uweb.trackEvent
 
-    UWeb.trackEvent = (category, action = args[1], label = args[2], value = args[3], nodeid = args[4]) => {
-      trackEvent.call(UWeb, category, action, label, value, nodeid)
+    uweb.trackEvent = (category, action = args[1], label = args[2], value = args[3], nodeid = args[4]) => {
+      trackEvent.call(uweb, category, action, label, value, nodeid)
     }
 
-    UWeb.trackEvent(args[0])
+    uweb.trackEvent(args[0])
 
     window._czc.should.have.lengthOf(1)
     window._czc[0].should.eql(['_trackEvent', ...args])
 
     window._czc = _czc
+    uweb.trackEvent = trackEvent
   })
 
   describe('_createMethod', () => {
@@ -84,22 +85,22 @@ describe('vue-uweb', () => {
     beforeEach(() => {
       array = null
 
-      sandbox.stub(UWeb, '_push', (arr) => {
+      sandbox.stub(uweb, '_push', (arr) => {
         array = arr
       })
     })
 
     after(() => {
-      delete UWeb[method]
+      delete uweb[method]
     })
 
     it('should reurn a new method', () => {
-      UWeb[method] = UWeb._createMethod(method)
-      UWeb[method].should.be.a('function')
+      uweb[method] = uweb._createMethod(method)
+      uweb[method].should.be.a('function')
     })
 
     it('should pass 1 parameters to _push', () => {
-      UWeb[method]('1')
+      uweb[method]('1')
 
       array[0].should.equal(`_${method}`)
       array[1].should.equal('1')
@@ -107,7 +108,7 @@ describe('vue-uweb', () => {
     })
 
     it('should pass 2 parameters to _push', () => {
-      UWeb[method]('1', '2')
+      uweb[method]('1', '2')
 
       array[0].should.equal(`_${method}`)
       array[1].should.equal('1')
@@ -116,7 +117,7 @@ describe('vue-uweb', () => {
     })
 
     it('should pass 3 parameters to _push', () => {
-      UWeb[method]('1', '2', '3')
+      uweb[method]('1', '2', '3')
 
       array[0].should.equal(`_${method}`)
       array[1].should.equal('1')
@@ -127,12 +128,12 @@ describe('vue-uweb', () => {
 
   describe('patch', () => {
     it('should create a new method', () => {
-      let _createMethod = sandbox.spy(UWeb, '_createMethod')
+      let _createMethod = sandbox.spy(uweb, '_createMethod')
 
-      UWeb.patch(method)
+      uweb.patch(method)
 
       _createMethod.calledOnce.should.be.true
-      UWeb[method].should.be.a('function')
+      uweb[method].should.be.a('function')
     })
   })
 
@@ -145,21 +146,21 @@ describe('vue-uweb', () => {
 
     afterEach(() => {
       window._czc = _czc
-      UWeb._cache = []
+      uweb._cache = []
     })
 
     it('should push into cache', () => {
       window._czc = undefined
-      UWeb._push(arg)
+      uweb._push(arg)
 
-      UWeb._cache.should.have.lengthOf(1)
-      UWeb._cache[0].should.equal(arg)
+      uweb._cache.should.have.lengthOf(1)
+      uweb._cache[0].should.equal(arg)
     })
 
     it('should push into _czc', () => {
       window._czc = []
 
-      UWeb._push(arg)
+      uweb._push(arg)
 
       window._czc.should.have.lengthOf(1)
       window._czc[0].should.equal(arg)

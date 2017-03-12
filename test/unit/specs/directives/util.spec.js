@@ -4,7 +4,7 @@ describe('directives.util', () => {
   describe('skip', () => {
     let binding = {}
 
-    it('should isEmpty should be true when value is empty', () => {
+    it('should be empty when value is empty', () => {
       binding.value = ''
       isEmpty(binding).should.be.true
 
@@ -15,12 +15,12 @@ describe('directives.util', () => {
       isEmpty(binding).should.be.true
     })
 
-    it('should isEmpty should be false when value is false', () => {
+    it('should be not empty when value is false', () => {
       binding.value = false
       isEmpty(binding).should.be.false
     })
 
-    it('should notChanged should be true when value is equal to oldValue', () => {
+    it('should be not changed when value is equal to oldValue', () => {
       binding.value = binding.oldValue = 'notChanged'
       notChanged(binding).should.be.true
 
@@ -28,9 +28,18 @@ describe('directives.util', () => {
       notChanged(binding).should.be.true
     })
 
-    it('should notChanged should be false when oldValue is undefined', () => {
+    it('should not changed when oldValue is undefined', () => {
       binding.value = binding.oldValue = undefined
       notChanged(binding).should.be.false
+    })
+
+    it('should not be changed when value and oldValue are deep equal', () => {
+      let binding = {
+        value: { foo: 'foo', bar: 'bar' },
+        oldValue: { foo: 'foo', bar: 'bar' }
+      }
+
+      notChanged(binding).should.be.true
     })
   })
 })
