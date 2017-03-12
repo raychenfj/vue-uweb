@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "A vuejs plugin for uweb statistics",
   "author": "raychenfj",
-  "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
