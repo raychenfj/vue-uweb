@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "A vuejs plugin for uweb statistics",
   "author": "raychenfj",
+  "main":"dist/index",
   "scripts": {
-    "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "test": "npm run unit",
@@ -16,7 +16,7 @@
     "deep-equal": "^1.0.1"
   },
   "peerDependencies": {
-    "vue": "^2.2.1"
+    "vue": "^2.0.0"
   },
   "devDependencies": {
     "vue": "^2.2.1",
