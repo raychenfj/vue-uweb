@@ -1,6 +1,6 @@
 {
   "name": "vue-uweb",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A vuejs plugin for uweb statistics",
   "author": "raychenfj",
   "main":"dist/index",
@@ -10,7 +10,7 @@
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit/specs",
     "pack": "npm run build && npm pack",
-    "publish": "npm run build && npm publish"
+    "release": "npm run build && npm publish"
   },
   "dependencies": {
     "deep-equal": "^1.0.1"

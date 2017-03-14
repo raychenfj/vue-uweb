@@ -199,7 +199,7 @@ vue-uweb 提供 track-event，track-pageview 和 auto-pageview 三个指令，�
 
 ```javascript
 let trackEvent = uweb.trackEvent
-uweb.trackEvent = (action, category='default'') => {
+uweb.trackEvent = (action, category='default') => {
   trackEvent.call(uweb, category, action, '', '', '')
 }
 
