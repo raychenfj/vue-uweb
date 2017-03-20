@@ -1,5 +1,11 @@
 export default {
   name: 'app',
-  components: {
+  data () {
+    return {
+      content: '',
+      auto: true,
+      vshow: false,
+      vif: false
+    }
   }
 }

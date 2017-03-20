@@ -11,6 +11,10 @@
     "statistics",
     "vue-plugin"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raychenfj/vue-uweb.git"
+  },
   "url": "https://github.com/raychenfj/vue-uweb/issues",
   "email": "raychenfj@gmail.com",
   "scripts": {

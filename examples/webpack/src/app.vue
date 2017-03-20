@@ -1,7 +1,209 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <hello></hello>
+    <img id="logo" src="./assets/logo.png" alt="Vue logo">
+    <h1>欢迎使用vue-uweb插件</h1>
+
+    <h2>1. 安装</h2>
+    <h3>npm</h3>
+    <pre><code class="language-html">npm install vue-uweb --save</code></pre>
+    <h3>直接在页面中引用</h3>
+    <pre><code class="language-html">&ltscript src="../node_modules/vue-uweb/dist/index.js">&lt/script></code></pre>
+    <h3>通过es6模块加载</h3>
+    <pre><code class="language-javascript">import uweb from 'vue-uweb'</code></pre>
+    <h3>使用 vue-uweb</h3>
+    <pre><code class="language-javascript">Vue.use(uweb,'YOUR_SITEID_HERE')</code></pre>
+    <h3>通过传递 options 参数进行更多设置</h3>
+    <pre><code class="language-javascript">Vue.use(uweb,options)</code></pre>
+    <div>options</div>
+    <ul>
+      <li>debug，可选，调试模式下将在控制台中输出调用 window._czc.push 时传递的参数，默认为 false，<b>请不要在生产环境中使用</b>，避免造成安全隐患</li>
+      <li>siteId，必填，绑定要接受API请求的统计代码siteid</li>
+      <li>autoPageview，可选，是否开启自动统计PV，默认为 true</li>
+      <li>src，可选，指定统计脚本标签的 src 属性，默认为 http://s11.cnzz.com/z_stat.php?id=SITEID&web_id=SITEID</li>
+    </ul>
+
+    <h2>2. uweb API</h2>
+    <a href="http://open.cnzz.com/a/new/procedure/">查看官方文档</a>
+    <div>
+      <b>注意:</b> 所有this均为 Vue 实例
+    </div>
+
+    <h3>2.1 ready</h3>
+    <div>当需要严格控制加载时序时，可使用 ready 方法。该方法返回一个 promise，当外部统计脚本加载完毕，全局 _czc 对象存在时，promise 被 resolve。</div>
+    <ul>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.ready().then(() => {
+  ...
+}).catch(() => {
+  ... // error handling here
+})
+
+// 使用 async await, 建议使用 try/catch 避免加载失败影响主程序
+async SOME_METHOD () {
+  try {
+    await this.$uweb.ready()
+    ...
+  } catch (e){
+    ... // error handling here
+  }
+}</code></pre>
+      </li>
+    </ul>
+
+    <h3>2.2 trackPageview</h3>
+    <div>用于发送某个URL的PV统计请求，适用于统计AJAX、异步加载页面，友情链接，下载链接的流量。</div>
+    <ul>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.trackPageview(content_url[, referer_url])</code></pre>
+      </li>
+      <li>参数
+        <ul>
+          <li>content_url，必填, string，自定义虚拟PV页面的URL地址，填写以斜杠‘/’开头的相对路径，系统会自动补全域名</li>
+          <li>referer_url，选填, string，自定义该受访页面的来源页URL地址，建议填写该异步加载页面的母页面。不填，则来路按母页面的来路计算。填为“空”，即""，则来路按“直接输入网址或书签”计算。</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>2.3 trackEvent</h3>
+    <div>用于发送页面上按钮等交互元素被触发时的事件统计请求。如视频的“播放、暂停、调整音量”，页面上的“返回顶部”、“赞”、“收藏”等。也可用于发送Flash事件统计请求。</div>
+    <ul>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.trackEvent(category, action[, label, value, nodeid])</code></pre>
+      </li>
+      <li>参数
+        <ul>
+          <li>category，必填，string，表示事件发生在谁身上，如“视频”、“小说”、“轮显层”等等。</li>
+          <li>action，必填，string，表示访客跟元素交互的行为动作，如"播放"、"收藏"、"翻层"等等。</li>
+          <li>label，选填，string，用于更详细的描述事件，如具体是哪个视频，哪部小说。</li>
+          <li>value，选填，int，用于填写打分型事件的分值，加载时间型事件的时长，订单型事件的价格。请填写整数数值，如果填写为其他形式，系统将按0处理。若填写为浮点小数，系统会自动取整，去掉小数点。</li>
+          <li>nodeid，选填，string，填写事件元素的div元素id。请填写class id，暂不支持name。</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>2.4 setCustomVar</h3>
+    <div>用于发送为访客打自定义标记的请求，用来统计会员访客、登录访客、不同来源访客的浏览数据。</div>
+    <ul>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.setCustomVar(name, value[, time])</code></pre>
+      </li>
+      <li>参数
+        <ul>
+          <li>name，必填，string，自定义访客种类，用来描述观察访客的角度，如“会员级别”、“访客来源”等等。</li>
+          <li>value，必填，string，自定义访客值，表示对访客类型的具体描述，如"VIP1"、"VIP2"等等。</li>
+          <li>time，选填，int，有效时长，表示本自定义访客标记的生效时长。 不填或填“1”表示长期有效。填“0”表示仅在发包页面有效。填“2”表示仅在本访次有效。填具体数值，表示生效时长，单位“秒”。</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>2.5 setAccount</h3>
+    <div>当您的页面上添加了多个CNZZ统计代码时，需要用到本方法绑定需要哪个siteid对应的统计代码来接受API发送的请求。未绑定的siteid将忽略相关请求。</div>
+    <ul>
+      <li>备注: 一般情况下无需调用该方法，只需调用 Vue.use 时直接传递 siteId 或通过 options.siteId 传递即可
+      </li>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.setAccount(siteid)</code></pre>
+      </li>
+      <li>参数
+        <ul>
+          <li>siteid，必填，int，绑定要接受API请求的统计代码siteid。</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>2.6 setAutoPageview</h3>
+    <div>如果您使用_trackPageview改写了已有页面的URL，那么建议您在CNZZ的JS统计代码执行前先调用_setAutoPageview，将该页面的自动PV统计关闭，防止页面的流量被统计双倍。</div>
+    <ul>
+      <li>备注: 在调用 Vue.use 时可通过通过 options.autoPageview 设置初始值，默认为 true
+      </li>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.setAutoPageview(autopageview)</code></pre>
+      </li>
+      <li>参数
+        <ul>
+          <li>autopageview，必填，boolean，是否自动发送页面PV的统计请求。关闭自动发送，填false开启自动发送，为true，不调用时默认为true</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>2.7 deleteCustomVar</h3>
+    <div>发送删除自定义访客标签的请求。将访客身上已被标记的自定义访客类型去掉，去掉后不再继续统计。</div>
+    <ul>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.deleteCustomVar(name)</code></pre>
+      </li>
+      <li>参数
+        <ul>
+          <li>name，必填，string，需要被删除的自定义访客类型。 填写自定义访客类型种类名name。</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>3. uweb 指令</h2>
+
+    <h3>3.1 track-event</h3>
+    <div>
+      使用指令 v-track-event 监听事件， 通过modifiers指定事件类型，将自动为绑定元素添加事件监听，当事件触发调用统计代码。 如不指定，默认监听 click 事件。 可通过逗号分隔的字符串或对象字面量传递参数，以字符串传递时请注意参数顺序，可参考
+      trackEvent API
+    </div><br>
+    <button v-track-event.click="'event, click'">统计click事件</button>
+    <pre><code class="language-html">&ltbutton v-track-event.click="'event, click''">&lt/button></code></pre>
+
+    <button v-track-event="'event, shortcut'">统计click事件简写</button>
+    <pre><code class="language-html">&ltbutton v-track-event="'event, shortcut'">&lt/button></code></pre>
+
+    <input v-track-event.keypress="'event, keypress'" placeholder="统计keypress事件" v-model="content"></input>
+    <pre><code class="language-html">&ltinput v-track-event.keypress="'event, keypress'"></code></pre>
+
+    <button v-track-event="'event, click'">以字符串传递参数</button>
+    <a href="http://open.cnzz.com/a/api/trackevent/">关于参数和顺序</a>
+    <pre><code class="language-html">&ltbutton v-track-event="'event, click'">&lt/button></code></pre>
+
+    <button v-track-event="{category:'event', action:'click'}">以对象字面量传递参数</button>
+    <pre><code class="language-html">&ltbutton v-track-event="{category:'event', action:'click'}">&lt/button></code></pre>
+
+    <h3>3.2 track-pageview</h3>
+    <div>
+      使用 v-show 跟踪虚拟pv
+      <input type="checkbox" v-model="vshow"></input>
+    </div>
+    <div v-show="vshow" v-track-pageview="'/bar'">bar</div>
+    <pre><code class="language-html">&ltdiv v-show="vshow" v-track-pageview="'/bar'">&lt/div></code></pre>
+
+    <div>
+      使用 v-if 跟踪虚拟pv
+      <input type="checkbox" v-model="vif"></input>
+    </div>
+    <div v-if="vif" v-track-pageview="'/foo'">foo</div>
+    <pre><code class="language-html">&ltdiv v-if="vif" v-track-pageview="'/foo'">&lt/div></code></pre>
+
+    <div v-track-pageview="'/tar, https://github.com/raychenfj'">以字符串指定受访页面和来源</div>
+    <pre><code class="language-html">&ltdiv v-track-pageview="'/tar, https://github.com/raychenfj'">&lt/div></code></pre>
+
+    <div v-track-pageview="{content_url:'/zoo', referer_url:'https://github.com/raychenfj'}">以对象字面量指定受访页面和来源</div>
+    <pre><code class="language-html">&ltdiv v-track-pageview="{content_url:'/zoo', referer_url:'https://github.com/raychenfj'}">&lt/div></code></pre>
+
+    <h3>3.3 auto-pageview</h3>
+    <span v-auto-pageview="auto">autoPageView: {{auto}}</span>
+    <input type="checkbox" v-model="auto">
+    <div>启用 auto-pageview</div>
+    <pre><code class="language-html">&ltdiv v-auto-pageview=true>&lt/div></code></pre>
+
+    <div>停止 auto-pageview</div>
+    <pre><code class="language-html">&ltdiv v-auto-pageview=false>&lt/div></code></pre>
+
+    <h1>4. 默认参数和改变参数顺序</h1>
+    <div>默认情况下，vue-uweb 并不提供默认参数和参数顺序的设置，但开发者可以根据需求，使用装饰器模式，来提供默认参数和改变参数顺序。例如：我们想在监听事件时默认category，只需要传递action，则代码如下</div>
+    <pre><code class="language-javascript">import uweb from 'vue-uweb'
+
+let trackEvent = uweb.trackEvent
+uweb.trackEvent = (action, category='default'') => {
+  trackEvent.call(uweb, category, action, '', '', '')
+}
+
+Vue.use(uweb)
+      </code></pre>
+    <div><b>注意:</b>由于所有 uweb指令 最终都将调用 uweb api 中的方法，所以对默认参数和参数顺序的修改同样会影响指令的参数和顺序</div>
   </div>
 </template>
 

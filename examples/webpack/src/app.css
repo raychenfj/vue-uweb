@@ -1,8 +1,25 @@
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+body {
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: #34495e;
+  background-color: #fff;
+  font-size: 14px;
+}
+
+#app {
+  width: 800px;
+  min-width: 800px;
+  max-width: 800px;
+  overflow-x: hidden;
+  margin: 0 auto;
+}
+
+#logo {
+  width: 400px;
+  margin: 0 auto;
+  display: block;
+}
+
+a {
+  color: #34495e
 }

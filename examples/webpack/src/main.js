@@ -2,6 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './app.vue'
+import './uweb'
+import 'prismjs'
+import '../node_modules/prismjs/themes/prism.css'
 
 Vue.config.productionTip = false
 
