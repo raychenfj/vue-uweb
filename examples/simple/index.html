@@ -39,23 +39,49 @@
     <div>
       <b>注意:</b> 所有this均为 Vue 实例
     </div>
-    <h3>2.1 trackPageview</h3>
+
+    <h3>2.1 ready</h3>
+    <div>当需要严格控制加载时序时，可使用 ready 方法。该方法返回一个 promise，当外部统计脚本加载完毕，全局 _czc 对象存在时，promise 被 resolve。</div>
+    <ul>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.ready().then(() => {
+  ...
+}).catch(() => {
+  ... // error handling here
+})
+
+// 使用 async await, 建议使用 try/catch 避免加载失败影响主程序
+async SOME_METHOD () {
+  try {
+    await this.$uweb.ready()
+    ...
+  } catch (e){
+    ... // error handling here
+  }
+}</code></pre>
+      </li>
+    </ul>
+
+    <h3>2.2 trackPageview</h3>
     <div>用于发送某个URL的PV统计请求，适用于统计AJAX、异步加载页面，友情链接，下载链接的流量。</div>
     <ul>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.trackPageview(content_url[, referer_url])</code></pre>
+      </li>
       <li>参数
         <ul>
           <li>content_url，必填, string，自定义虚拟PV页面的URL地址，填写以斜杠‘/’开头的相对路径，系统会自动补全域名</li>
           <li>referer_url，选填, string，自定义该受访页面的来源页URL地址，建议填写该异步加载页面的母页面。不填，则来路按母页面的来路计算。填为“空”，即""，则来路按“直接输入网址或书签”计算。</li>
         </ul>
       </li>
-      <li>用法
-        <pre><code class="language-javascript">this.$uweb.trackPageview(content_url[, referer_url])</code></pre>
-      </li>
     </ul>
 
-    <h3>2.2 trackEvent</h3>
+    <h3>2.3 trackEvent</h3>
     <div>用于发送页面上按钮等交互元素被触发时的事件统计请求。如视频的“播放、暂停、调整音量”，页面上的“返回顶部”、“赞”、“收藏”等。也可用于发送Flash事件统计请求。</div>
     <ul>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.trackEvent(category, action[, label, value, nodeid])</code></pre>
+      </li>
       <li>参数
         <ul>
           <li>category，必填，string，表示事件发生在谁身上，如“视频”、“小说”、“轮显层”等等。</li>
@@ -65,14 +91,14 @@
           <li>nodeid，选填，string，填写事件元素的div元素id。请填写class id，暂不支持name。</li>
         </ul>
       </li>
-      <li>用法
-        <pre><code class="language-javascript">this.$uweb.trackEvent(category, action[, label, value, nodeid])</code></pre>
-      </li>
     </ul>
 
-    <h3>2.3 setCustomVar</h3>
+    <h3>2.4 setCustomVar</h3>
     <div>用于发送为访客打自定义标记的请求，用来统计会员访客、登录访客、不同来源访客的浏览数据。</div>
     <ul>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.setCustomVar(name, value[, time])</code></pre>
+      </li>
       <li>参数
         <ul>
           <li>name，必填，string，自定义访客种类，用来描述观察访客的角度，如“会员级别”、“访客来源”等等。</li>
@@ -80,51 +106,48 @@
           <li>time，选填，int，有效时长，表示本自定义访客标记的生效时长。 不填或填“1”表示长期有效。填“0”表示仅在发包页面有效。填“2”表示仅在本访次有效。填具体数值，表示生效时长，单位“秒”。</li>
         </ul>
       </li>
-      <li>用法
-        <pre><code class="language-javascript">this.$uweb.setCustomVar(name, value[, time])</code></pre>
-      </li>
     </ul>
 
-    <h3>2.4 setAccount</h3>
+    <h3>2.5 setAccount</h3>
     <div>当您的页面上添加了多个CNZZ统计代码时，需要用到本方法绑定需要哪个siteid对应的统计代码来接受API发送的请求。未绑定的siteid将忽略相关请求。</div>
     <ul>
+      <li>备注: 一般情况下无需调用该方法，只需调用 Vue.use 时直接传递 siteId 或通过 options.siteId 传递即可
+      </li>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.setAccount(siteid)</code></pre>
+      </li>
       <li>参数
         <ul>
           <li>siteid，必填，int，绑定要接受API请求的统计代码siteid。</li>
         </ul>
       </li>
-      <li>用法
-        <pre><code class="language-javascript">this.$uweb.setAccount(siteid)</code></pre>
-      </li>
-      <li>备注: 一般情况下无需调用该方法，只需调用 Vue.use 时直接传递 siteId 或通过 options.siteId 传递即可
-      </li>
     </ul>
 
-    <h3>2.5 setAutoPageview</h3>
+    <h3>2.6 setAutoPageview</h3>
     <div>如果您使用_trackPageview改写了已有页面的URL，那么建议您在CNZZ的JS统计代码执行前先调用_setAutoPageview，将该页面的自动PV统计关闭，防止页面的流量被统计双倍。</div>
     <ul>
+      <li>备注: 在调用 Vue.use 时可通过通过 options.autoPageview 设置初始值，默认为 true
+      </li>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.setAutoPageview(autopageview)</code></pre>
+      </li>
       <li>参数
         <ul>
           <li>autopageview，必填，boolean，是否自动发送页面PV的统计请求。关闭自动发送，填false开启自动发送，为true，不调用时默认为true</li>
         </ul>
       </li>
-      <li>用法
-        <pre><code class="language-javascript">this.$uweb.setAutoPageview(autopageview)</code></pre>
-      </li>
-      <li>备注: 在调用 Vue.use 时可通过通过 options.autoPageview 设置初始值，默认为 true
-      </li>
     </ul>
 
-    <h3>2.6 deleteCustomVar</h3>
+    <h3>2.7 deleteCustomVar</h3>
     <div>发送删除自定义访客标签的请求。将访客身上已被标记的自定义访客类型去掉，去掉后不再继续统计。</div>
     <ul>
+      <li>用法
+        <pre><code class="language-javascript">this.$uweb.deleteCustomVar(name)</code></pre>
+      </li>
       <li>参数
         <ul>
           <li>name，必填，string，需要被删除的自定义访客类型。 填写自定义访客类型种类名name。</li>
         </ul>
-      </li>
-      <li>用法
-        <pre><code class="language-javascript">this.$uweb.deleteCustomVar(name)</code></pre>
       </li>
     </ul>
 

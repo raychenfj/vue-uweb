@@ -1,6 +1,6 @@
-# vue-uweb
-
-> vuejs 友盟统计埋点插件
+# vue-uweb 
+[![Build Status](https://travis-ci.org/raychenfj/vue-uweb.svg?branch=master)](https://travis-ci.org/raychenfj/vue-uweb)
+> vuejs 友盟统计埋点插件 
 
 ## 1. 安装
 
@@ -38,8 +38,30 @@ Vue.use(uweb,options)
 
 **注意:** 所有 this 均为 Vue 实例
 
+### 2.1 ready
 
-### 2.1 trackPageview
+当需要严格控制加载时序时，可使用 ready 方法。该方法返回一个 promise，当外部统计脚本加载完毕，全局 _czc 对象存在时，promise 被 resolve。
+
+**用法**
+```javascript
+this.$uweb.ready().then(() => {
+  ...
+}).catch(() => {
+  ... // error handling here
+})
+
+// 使用 async await, 建议使用 try/catch 避免加载失败影响主程序
+async SOME_METHOD () {
+  try {
+    await this.$uweb.ready()
+    ...
+  } catch (e){
+    ... // error handling here
+  }
+}
+```
+
+### 2.2 trackPageview
 
 用于发送某个URL的PV统计请求，适用于统计AJAX、异步加载页面，友情链接，下载链接的流量。
 
@@ -55,7 +77,7 @@ this.$uweb.trackPageview(content_url[, referer_url])
 | content_url | 是 | string | 自定义虚拟PV页面的URL地址，填写以斜杠‘/’开头的相对路径，系统会自动补全域名 |
 | referer_url | 否 | string | 自定义该受访页面的来源页URL地址，建议填写该异步加载页面的母页面。不填，则来路按母页面的来路计算。填为“空”，即""，则来路按“直接输入网址或书签”计算。 |
 
-### 2.2 trackEvent
+### 2.3 trackEvent
 
 用于发送页面上按钮等交互元素被触发时的事件统计请求。如视频的“播放、暂停、调整音量”，页面上的“返回顶部”、“赞”、“收藏”等。也可用于发送Flash事件统计请求。
 
@@ -74,7 +96,7 @@ this.$uweb.trackEvent(category, action[, label, value, nodeid])
 | value | 否 | int | 用于填写打分型事件的分值，加载时间型事件的时长，订单型事件的价格。请填写整数数值，如果填写为其他形式，系统将按0处理。若填写为浮点小数，系统会自动取整，去掉小数点。|
 | nodeid | 否 | string | 填写事件元素的div元素id。请填写class id，暂不支持name。|
 
-### 2.3 setCustomVar
+### 2.4 setCustomVar
 
 用于发送为访客打自定义标记的请求，用来统计会员访客、登录访客、不同来源访客的浏览数据。
 
@@ -91,7 +113,7 @@ this.$uweb.setCustomVar(name, value[, time])
 | value | 是 | string | 自定义访客值，表示对访客类型的具体描述，如"VIP1"、"VIP2"等等。|
 | time | 否 | int | 有效时长，表示本自定义访客标记的生效时长。 不填或填“1”表示长期有效。填“0”表示仅在发包页面有效。填“2”表示仅在本访次有效。填具体数值，表示生效时长，单位“秒”。|
 
-### 2.4 setAccount
+### 2.5 setAccount
 
 当您的页面上添加了多个CNZZ统计代码时，需要用到本方法绑定需要哪个siteid对应的统计代码来接受API发送的请求。未绑定的siteid将忽略相关请求。
 
@@ -108,11 +130,11 @@ this.$uweb.setAccount(siteid)
 |-----|------|-----|-----|
 | siteid | 是 | int | 绑定要接受API请求的统计代码siteid。 |
 
-### 2.5 setAutoPageview
+### 2.6 setAutoPageview
 
 如果您使用_trackPageview改写了已有页面的URL，那么建议您在CNZZ的JS统计代码执行前先调用_setAutoPageview，将该页面的自动PV统计关闭，防止页面的流量被统计双倍。
 
-**备注：** 在调用 Vue.use 时可通过通过 options.autoPageview 设置初始值，默认为 true
+**备注：** 在调用 Vue.use 时可通过 options.autoPageview 设置初始值，默认为 true
 
 **用法**
 ```javascript
@@ -125,7 +147,7 @@ this.$uweb.setAutoPageview(autopageview)
 |-----|------|-----|-----|
 | autopageview | 是 | boolean | 是否自动发送页面PV的统计请求。关闭自动发送，填false开启自动发送，为true，不调用时默认为true。 |
 
-### 2.6 deleteCustomVar ###
+### 2.7 deleteCustomVar ###
 
 发送删除自定义访客标签的请求。将访客身上已被标记的自定义访客类型去掉，去掉后不再继续统计。
 
