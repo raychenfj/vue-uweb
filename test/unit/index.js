@@ -1,6 +1,6 @@
 import Vue from 'vue'
 Vue.config.productionTip = false
-require('phantomjs-polyfill-find-Index')
+require('Phantomjs-polyfill-find-Index')
 
 // Polyfill fn.bind() for PhantomJS
 /* eslint-disable no-extend-native */
