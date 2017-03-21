@@ -32,6 +32,7 @@ describe('vue-uweb', () => {
 
   describe('install', function () {
     it('should load script successfully', function (done) {
+      this.timeout(30 * 1000)
       let createElement = sandbox.spy(document, 'createElement').withArgs('script')
       let _resolve = sandbox.spy(uweb, '_resolve')
       let setAccount = sandbox.spy(uweb, 'setAccount')

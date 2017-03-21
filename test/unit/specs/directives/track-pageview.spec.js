@@ -46,7 +46,7 @@ describe('directives.track-pageview', () => {
 
       trackPageviewSpy.withArgs('v-show').calledOnce.should.be.true
       watch.should.have.lengthOf(0)
-      watch.findIndex(element => element === el).should.equal(-1)
+      watch.should.not.include(el)
     })
 
     it('should remove from watch queue when a v-show binded element is unbinded', () => {
@@ -55,7 +55,7 @@ describe('directives.track-pageview', () => {
       trackPageview.unbind(el, binding)
 
       watch.should.have.lengthOf(0)
-      watch.findIndex(element => element === el).should.equal(-1)
+      watch.should.not.include(el)
     })
   })
 
