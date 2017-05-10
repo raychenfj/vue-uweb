@@ -40,12 +40,12 @@ const uweb = {
   /**
    * push the args into _czc, or _cache if the script is not loaded yet
    */
-  _push () {
-    this.debug(arguments)
+  _push (...args) {
+    this.debug(args)
     if (window._czc) {
-      window._czc.push.apply(window._czc, arguments)
+      window._czc.push(...args)
     } else {
-      this._cache.push.apply(this._cache, arguments)
+      this._cache.push(...args)
     }
   },
 
@@ -53,8 +53,7 @@ const uweb = {
    * general method to create uweb apis
    */
   _createMethod (method) {
-    return function () {
-      let args = Array.prototype.slice.apply(arguments)
+    return (...args) => {
       this._push([`_${method}`, ...args])
     }
   },
