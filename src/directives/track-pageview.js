@@ -1,12 +1,12 @@
 import uweb from '../index'
 import { notChanged, isEmpty } from './util'
 
-export let watch = []
+export const watch = []
 
 const trackPageview = {
   bind (el, binding) {
-    let index = watch.findIndex(element => element === el)
-    let isWatched = index !== -1
+    const index = watch.findIndex(element => element === el)
+    const isWatched = index !== -1
     // watch for a v-show binded element, push it to watch queue when v-show is false
     if (el.style.display === 'none') {
       if (!isWatched) watch.push(el)
@@ -21,7 +21,7 @@ const trackPageview = {
 
     // passing parameters as object
     if (typeof binding.value === 'object') {
-      let value = binding.value
+      const value = binding.value
       if (value.content_url) args.push(value.content_url)
       if (value.referer_url) args.push(value.referer_url)
 
@@ -34,7 +34,7 @@ const trackPageview = {
     uweb.trackPageview(...args)
   },
   unbind (el, binding) {
-    let index = watch.findIndex(element => element === el)
+    const index = watch.findIndex(element => element === el)
     if (index !== -1) watch.splice(index, 1)
   }
 }

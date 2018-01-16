@@ -54,7 +54,7 @@ const uweb = {
    */
   _createMethod (method) {
     return function () {
-      let args = Array.prototype.slice.apply(arguments)
+      const args = Array.prototype.slice.apply(arguments)
       this._push([`_${method}`, ...args])
     }
   },

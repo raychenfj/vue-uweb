@@ -1,16 +1,25 @@
 {
   "presets": [
-    ["latest", {
-      "es2015": { "modules": false }
-    }],
-    "stage-2"
+    [
+      "env",
+    {
+      "targets": {
+        "browsers": [
+          "last 2 versions"
+        ]
+      }
+    }
+    ]
   ],
-  "plugins": ["transform-runtime"],
-  "comments": false,
+  "plugins": [
+    "transform-vue-jsx",
+    "transform-object-rest-spread"
+  ],
   "env": {
     "test": {
-      "presets": ["latest", "stage-2"],
-      "plugins": [ "istanbul" ]
+      "plugins": [
+        "istanbul"
+      ]
     }
   }
 }

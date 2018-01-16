@@ -4,8 +4,8 @@ import chai from 'chai'
 
 describe('vue-uweb', () => {
   let sandbox = null
-  let should = chai.should()
-  let method = 'new'
+  const should = chai.should()
+  const method = 'new'
   const methods = [
     'trackPageview',
     'trackEvent',
@@ -33,10 +33,10 @@ describe('vue-uweb', () => {
   describe('install', function () {
     it('should load script successfully', function (done) {
       this.timeout(30 * 1000)
-      let createElement = sandbox.spy(document, 'createElement').withArgs('script')
-      let _resolve = sandbox.spy(uweb, '_resolve')
-      let setAccount = sandbox.spy(uweb, 'setAccount')
-      let setAutoPageview = sandbox.spy(uweb, 'setAutoPageview')
+      const createElement = sandbox.spy(document, 'createElement').withArgs('script')
+      const _resolve = sandbox.spy(uweb, '_resolve')
+      const setAccount = sandbox.spy(uweb, 'setAccount')
+      const setAutoPageview = sandbox.spy(uweb, 'setAutoPageview')
 
       const siteId = '1261414301'
       Vue.use(uweb, siteId)
@@ -54,7 +54,7 @@ describe('vue-uweb', () => {
         setAutoPageview.calledOnce.should.be.true
         uweb.install.installed.should.be.true
         window._czc.should.exist
-        let scripts = document.body.getElementsByTagName('script')
+        const scripts = document.body.getElementsByTagName('script')
         scripts[scripts.length - 1].src.indexOf(siteId).should.not.equal(-1)
         done()
       })
@@ -64,8 +64,8 @@ describe('vue-uweb', () => {
   it('should provide default parameters', () => {
     const _czc = window._czc
     window._czc = []
-    let args = ['category', 'aciton', 'label', 999, 'nodeid']
-    let trackEvent = uweb.trackEvent
+    const args = ['category', 'aciton', 'label', 999, 'nodeid']
+    const trackEvent = uweb.trackEvent
 
     uweb.trackEvent = (category, action = args[1], label = args[2], value = args[3], nodeid = args[4]) => {
       trackEvent.call(uweb, category, action, label, value, nodeid)
@@ -129,7 +129,7 @@ describe('vue-uweb', () => {
 
   describe('patch', () => {
     it('should create a new method', () => {
-      let _createMethod = sandbox.spy(uweb, '_createMethod')
+      const _createMethod = sandbox.spy(uweb, '_createMethod')
 
       uweb.patch(method)
 
@@ -140,7 +140,7 @@ describe('vue-uweb', () => {
 
   describe('_push', () => {
     let _czc = null
-    let arg = ['_trackEvent', 'click', 'event']
+    const arg = ['_trackEvent', 'click', 'event']
     before(() => {
       _czc = window._czc
     })
