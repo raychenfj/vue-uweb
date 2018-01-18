@@ -13,7 +13,8 @@
   ],
   "plugins": [
     "transform-vue-jsx",
-    "transform-object-rest-spread"
+    "transform-object-rest-spread",
+    "transform-runtime"
   ],
   "env": {
     "test": {
