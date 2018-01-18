@@ -1,8 +1,8 @@
-import { isEmpty, notChanged } from '../../../../src/directives/util'
+import { isEmpty, notChanged } from 'src/directives/util'
 
 describe('directives.util', () => {
   describe('skip', () => {
-    let binding = {}
+    const binding = {}
 
     it('should be empty when value is empty', () => {
       binding.value = ''
@@ -34,7 +34,7 @@ describe('directives.util', () => {
     })
 
     it('should not be changed when value and oldValue are deep equal', () => {
-      let binding = {
+      const binding = {
         value: { foo: 'foo', bar: 'bar' },
         oldValue: { foo: 'foo', bar: 'bar' }
       }

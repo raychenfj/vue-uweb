@@ -1,5 +1,5 @@
-import trackEvent from '../../../../src/directives/track-event'
-import uweb from '../../../../src/index'
+import trackEvent from 'src/directives/track-event'
+import uweb from 'src/index'
 import { htmlElement } from '../../mocks'
 
 describe('directives.track-event', () => {
@@ -101,7 +101,7 @@ describe('directives.track-event', () => {
       value: 666,
       nodeid: 'node'
     }
-    let addEventListener = sandbox.spy(el, 'addEventListener')
+    const addEventListener = sandbox.spy(el, 'addEventListener')
 
     trackEvent(el, binding)
 
@@ -110,7 +110,7 @@ describe('directives.track-event', () => {
   })
 
   it('should skip when value is empty', () => {
-    let addEventListener = sandbox.spy(el, 'addEventListener')
+    const addEventListener = sandbox.spy(el, 'addEventListener')
 
     trackEvent(el, binding)
 

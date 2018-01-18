@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import uweb from '../../../src/index'
+import uweb from 'src/index'
 import chai from 'chai'
 
 describe('vue-uweb', () => {
