@@ -9,7 +9,7 @@ npm install vue-uweb --save
 ```
 直接在页面中引用
 ```html
-<script src="./node_modules/vue-uweb/dist/index.js"><script>
+<script src="./node_modules/vue-uweb/dist/vue-uweb.min.js"><script>
 ```
 或通过es6模块加载
 ```javascript
