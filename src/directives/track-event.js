@@ -6,7 +6,7 @@ export default function (el, binding) {
 
   let args = []
   // use modifier as events
-  let events = Object.keys(binding.modifiers).map(modifier => {
+  const events = Object.keys(binding.modifiers).map(modifier => {
     if (binding.modifiers[modifier]) {
       return modifier
     }
@@ -14,7 +14,7 @@ export default function (el, binding) {
 
   // passing parameters as object
   if (typeof binding.value === 'object') {
-    let value = binding.value
+    const value = binding.value
     if (value.category) args.push(value.category)
     if (value.action) args.push(value.action)
     if (value.label) args.push(value.label)

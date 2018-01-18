@@ -1,5 +1,5 @@
-import autoPageview from '../../../../src/directives/auto-pageview'
-import uweb from '../../../../src/index'
+import autoPageview from 'src/directives/auto-pageview'
+import uweb from 'src/index'
 import { htmlElement } from '../../mocks'
 
 describe('directives.auto-pageview', () => {

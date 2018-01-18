@@ -1,5 +1,5 @@
-import trackPageview, { watch } from '../../../../src/directives/track-pageview'
-import uweb from '../../../../src/index'
+import trackPageview, { watch } from 'src/directives/track-pageview'
+import uweb from 'src/index'
 import { htmlElement } from '../../mocks'
 
 describe('directives.track-pageview', () => {
