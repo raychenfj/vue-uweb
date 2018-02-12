@@ -86,7 +86,7 @@ describe('vue-uweb', () => {
     beforeEach(() => {
       array = null
 
-      sandbox.stub(uweb, '_push', (arr) => {
+      sandbox.stub(uweb, '_push').callsFake((arr) => {
         array = arr
       })
     })
