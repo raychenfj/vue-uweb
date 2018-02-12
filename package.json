@@ -1,6 +1,6 @@
 {
   "name": "vue-uweb",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A vuejs plugin for uweb statistics",
   "author": "raychenfj",
   "main": "dist/vue-uweb.common.js",
