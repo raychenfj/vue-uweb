@@ -4,6 +4,10 @@ import { notChanged, isEmpty } from './util'
 export default function (el, binding) {
   if (notChanged(binding) || isEmpty(binding)) return
 
+  if (el.removeEventListeners && typeof el.removeEventListeners === 'function') {
+    el.removeEventListeners()
+  }
+
   let args = []
   // use modifier as events
   const events = Object.keys(binding.modifiers).map(modifier => {
@@ -30,7 +34,16 @@ export default function (el, binding) {
   if (!events.length) events.push('click') // listen click event by default
 
   // addEventListener for each event, call trackEvent api
-  events.forEach((event) => {
-    el.addEventListener(event, () => uweb.trackEvent(...args), false)
+  const listeners = []
+  events.forEach((event, index) => {
+    listeners[index] = () => uweb.trackEvent(...args)
+    el.addEventListener(event, listeners[index], false)
   })
+
+  // a function to remove all previous event listeners in update cycle to prevent duplication
+  el.removeEventListeners = () => {
+    events.forEach((event, index) => {
+      el.removeEventListener(event, listeners[index])
+    })
+  }
 }

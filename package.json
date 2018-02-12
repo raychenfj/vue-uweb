@@ -35,7 +35,7 @@
     "test": "cross-env BABEL_ENV=test karma start test/karma.conf.js --single-run",
     "dev": "webpack-dashboard -- webpack-dev-server --config build/webpack.config.dev.js --open",
     "dev:coverage": "cross-env BABEL_ENV=test karma start test/karma.conf.js",
-    "prepublish": "yon run build"
+    "prepublishOnly": "yon run build"
   },
   "dependencies": {
     "deep-equal": "^1.0.1"
@@ -77,6 +77,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^3.3.0",
     "mocha-css": "^1.0.1",
+    "phantomjs-polyfill-find": "github:ptim/phantomjs-polyfill-find",
     "phantomjs-polyfill-find-index": "^1.0.1",
     "postcss": "^6.0.0",
     "postcss-cssnext": "^2.10.0",

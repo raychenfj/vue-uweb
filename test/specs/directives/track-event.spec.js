@@ -2,6 +2,17 @@ import trackEvent from 'src/directives/track-event'
 import uweb from 'src/index'
 import { htmlElement } from '../../mocks'
 
+function hasEvent (listeners, event) {
+  return !!listeners.find(listener => listener.event === event)
+}
+
+function getEventListener (listeners, event) {
+  const listener = listeners.find(listener => listener.event === event)
+  if (listener && typeof listener.listener === 'function') {
+    return listener.listener
+  }
+}
+
 describe('directives.track-event', () => {
   let el = htmlElement()
   let binding = null
@@ -30,8 +41,8 @@ describe('directives.track-event', () => {
     trackEvent(el, binding)
 
     trackEventSpy.notCalled.should.be.true
-    el.listeners.has('click').should.be.true
-    el.listeners.get('click')()
+    hasEvent(el.listeners, 'click').should.be.true
+    getEventListener(el.listeners, 'click')()
 
     trackEventSpy.withArgs('category', 'action').calledOnce.should.be.true
   })
@@ -45,8 +56,9 @@ describe('directives.track-event', () => {
     trackEvent(el, binding)
 
     trackEventSpy.notCalled.should.be.true
-    el.listeners.has('keypress').should.be.true
-    el.listeners.get('keypress')()
+
+    hasEvent(el.listeners, 'keypress').should.be.true
+    getEventListener(el.listeners, 'keypress')()
 
     trackEventSpy.withArgs('category', 'action', 'label').calledOnce.should.be.true
   })
@@ -63,14 +75,14 @@ describe('directives.track-event', () => {
 
     trackEventSpy.notCalled.should.be.true
 
-    el.listeners.has('keypress').should.be.true
-    el.listeners.get('keypress')()
+    hasEvent(el.listeners, 'keypress').should.be.true
+    getEventListener(el.listeners, 'keypress')()
 
-    el.listeners.has('mouseup').should.be.true
-    el.listeners.get('mouseup')()
+    hasEvent(el.listeners, 'mouseup').should.be.true
+    getEventListener(el.listeners, 'mouseup')()
 
-    el.listeners.has('mousedown').should.be.true
-    el.listeners.get('mousedown')()
+    hasEvent(el.listeners, 'mousedown').should.be.true
+    getEventListener(el.listeners, 'mousedown')()
 
     trackEventSpy.withArgs('category', 'action', 'label', '666').calledThrice.should.be.true
   })
@@ -87,8 +99,8 @@ describe('directives.track-event', () => {
     trackEvent(el, binding)
 
     trackEventSpy.notCalled.should.be.true
-    el.listeners.has('click').should.be.true
-    el.listeners.get('click')()
+    hasEvent(el.listeners, 'click').should.be.true
+    getEventListener(el.listeners, 'click')()
 
     trackEventSpy.withArgs('category', 'action', 'label', 666, 'node').calledOnce.should.be.true
   })
@@ -116,5 +128,22 @@ describe('directives.track-event', () => {
 
     trackEventSpy.notCalled.should.be.true
     addEventListener.notCalled.should.be.true
+  })
+
+  it('should prevent duplicated binding when update', () => {
+    binding.value = 'category, action'
+
+    trackEvent(el, binding)
+
+    binding.oldValue = {
+      category: 'category',
+      action: 'action'
+    }
+    binding.value = 'new-category, new-action'
+
+    trackEvent(el, binding)
+
+    hasEvent(el.listeners, 'click').should.be.true
+    el.listeners.filter(listener => listener.event === 'click').length.should.equal(1)
   })
 })

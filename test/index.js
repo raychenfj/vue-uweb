@@ -5,6 +5,7 @@ Function.prototype.bind = bind
 
 // Polyfill array.findIndex() for PhantomJS
 import 'phantomjs-polyfill-find-index'
+import 'phantomjs-polyfill-find'
 
 // Polyfill Object.assign for PhantomJS
 import objectAssign from 'object-assign'
