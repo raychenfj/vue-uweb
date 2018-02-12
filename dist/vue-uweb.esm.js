@@ -174,6 +174,10 @@ var autoPageview = function (el, binding) {
 var trackEvent = function (el, binding) {
   if (notChanged(binding) || isEmpty(binding)) { return }
 
+  if (el.removeEventListeners && typeof el.removeEventListeners === 'function') {
+    el.removeEventListeners();
+  }
+
   var args = [];
   // use modifier as events
   var events = Object.keys(binding.modifiers).map(function (modifier) {
@@ -200,9 +204,18 @@ var trackEvent = function (el, binding) {
   if (!events.length) { events.push('click'); } // listen click event by default
 
   // addEventListener for each event, call trackEvent api
-  events.forEach(function (event) {
-    el.addEventListener(event, function () { return uweb.trackEvent.apply(uweb, args); }, false);
+  var listeners = [];
+  events.forEach(function (event, index) {
+    listeners[index] = function () { return uweb.trackEvent.apply(uweb, args); };
+    el.addEventListener(event, listeners[index], false);
   });
+
+  // a function to remove all previous event listeners in update cycle to prevent duplication
+  el.removeEventListeners = function () {
+    events.forEach(function (event, index) {
+      el.removeEventListener(event, listeners[index]);
+    });
+  };
 };
 
 var watch = [];
