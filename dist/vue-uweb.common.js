@@ -1,5 +1,5 @@
 /*!
- * vue-uweb v0.2.0
+ * vue-uweb v0.2.1
  * (c) 2018 raychenfj
  * Released under the MIT License.
  */
