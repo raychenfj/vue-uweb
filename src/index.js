@@ -9,12 +9,12 @@ deferred.promise = new Promise((resolve, reject) => {
 
 // uweb apis
 const methods = [
-  'trackPageview',      // http://open.cnzz.com/a/api/trackpageview/
-  'trackEvent',         // http://open.cnzz.com/a/api/trackevent/
-  'setCustomVar',       // http://open.cnzz.com/a/api/setcustomvar/
-  'setAccount',         // http://open.cnzz.com/a/api/setaccount/
-  'setAutoPageview',    // http://open.cnzz.com/a/api/setautopageview/
-  'deleteCustomVar'     // http://open.cnzz.com/a/api/deletecustomvar/
+  'trackPageview', // http://open.cnzz.com/a/api/trackpageview/
+  'trackEvent', // http://open.cnzz.com/a/api/trackevent/
+  'setCustomVar', // http://open.cnzz.com/a/api/setcustomvar/
+  'setAccount', // http://open.cnzz.com/a/api/setaccount/
+  'setAutoPageview', // http://open.cnzz.com/a/api/setautopageview/
+  'deleteCustomVar' // http://open.cnzz.com/a/api/deletecustomvar/
 ]
 
 const uweb = {

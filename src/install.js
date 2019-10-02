@@ -2,13 +2,13 @@ import autoPageview from './directives/auto-pageview'
 import trackEvent from '././directives/track-event'
 import trackPageview from '././directives/track-pageview'
 
-  /**
-   * install
-   *
-   * @param {Vue} Vue
-   * @param {Object} options
-   * @returns
-   */
+/**
+ * install
+ *
+ * @param {Vue} Vue
+ * @param {Object} options
+ * @returns
+ */
 export default function install (Vue, options) {
   if (this.install.installed) return
 
@@ -35,7 +35,7 @@ export default function install (Vue, options) {
 
   // insert u-web statistics script
   const script = document.createElement('script')
-  const src = `https://s95.cnzz.com/z_stat.php?id=${siteId}&web_id=${siteId}`
+  const src = `https://s11.cnzz.com/z_stat.php?id=${siteId}&web_id=${siteId}`
   script.src = options.src || src
 
   // callback when the script is loaded

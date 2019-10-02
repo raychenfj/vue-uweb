@@ -33,7 +33,6 @@ describe('vue-uweb', () => {
   describe('install', function () {
     it('should load script successfully', function (done) {
       this.timeout(30 * 1000)
-      const createElement = sandbox.spy(document, 'createElement').withArgs('script')
       const _resolve = sandbox.spy(uweb, '_resolve')
       const setAccount = sandbox.spy(uweb, 'setAccount')
       const setAutoPageview = sandbox.spy(uweb, 'setAutoPageview')
@@ -48,7 +47,6 @@ describe('vue-uweb', () => {
         Vue.directive('track-event').should.exist
         Vue.directive('track-pageview').should.exist
         uweb._cache.should.eql([])
-        createElement.calledOnce.should.be.true
         _resolve.calledOnce.should.be.true
         setAccount.calledOnce.should.be.true
         setAutoPageview.calledOnce.should.be.true
