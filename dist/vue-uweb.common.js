@@ -1,5 +1,5 @@
 /*!
- * vue-uweb v0.2.1
+ * vue-uweb v0.2.2
  * (c) 2019 raychenfj
  * Released under the MIT License.
  */
@@ -695,15 +695,21 @@ var trackPageview = {
 trackPageview.update = trackPageview.bind;
 
 /**
-   * install
-   *
-   * @param {Vue} Vue
-   * @param {Object} options
-   * @returns
-   */
+ * install
+ *
+ * @param {Vue} Vue
+ * @param {Object} options
+ * @returns
+ */
 function install (Vue, options) {
   var this$1 = this;
 
+  if (!window) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('vue-uweb can only be used in browser');
+    }
+    return
+  }
   if (this.install.installed) { return }
 
   if (options.debug) {
@@ -729,7 +735,7 @@ function install (Vue, options) {
 
   // insert u-web statistics script
   var script = document.createElement('script');
-  var src = "https://s95.cnzz.com/z_stat.php?id=" + siteId + "&web_id=" + siteId;
+  var src = "https://s11.cnzz.com/z_stat.php?id=" + siteId + "&web_id=" + siteId;
   script.src = options.src || src;
 
   // callback when the script is loaded
@@ -773,12 +779,12 @@ deferred.promise = new Promise(function (resolve, reject) {
 
 // uweb apis
 var methods = [
-  'trackPageview',      // http://open.cnzz.com/a/api/trackpageview/
-  'trackEvent',         // http://open.cnzz.com/a/api/trackevent/
-  'setCustomVar',       // http://open.cnzz.com/a/api/setcustomvar/
-  'setAccount',         // http://open.cnzz.com/a/api/setaccount/
-  'setAutoPageview',    // http://open.cnzz.com/a/api/setautopageview/
-  'deleteCustomVar'     // http://open.cnzz.com/a/api/deletecustomvar/
+  'trackPageview', // http://open.cnzz.com/a/api/trackpageview/
+  'trackEvent', // http://open.cnzz.com/a/api/trackevent/
+  'setCustomVar', // http://open.cnzz.com/a/api/setcustomvar/
+  'setAccount', // http://open.cnzz.com/a/api/setaccount/
+  'setAutoPageview', // http://open.cnzz.com/a/api/setautopageview/
+  'deleteCustomVar' // http://open.cnzz.com/a/api/deletecustomvar/
 ];
 
 var uweb = {
