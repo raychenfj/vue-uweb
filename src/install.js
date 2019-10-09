@@ -10,6 +10,12 @@ import trackPageview from '././directives/track-pageview'
  * @returns
  */
 export default function install (Vue, options) {
+  if (!window) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('vue-uweb can only be used in browser')
+    }
+    return
+  }
   if (this.install.installed) return
 
   if (options.debug) {
