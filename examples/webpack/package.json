@@ -10,7 +10,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
-    "prismjs": "^1.6.0",
+    "prismjs": "^1.24.0",
     "vue": "^2.2.2",
     "vue-uweb": "0.0.3"
   },
